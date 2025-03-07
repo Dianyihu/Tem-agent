@@ -1,0 +1,5 @@
+Number of fins detected: 1
+Fin 1 width: 344.0653 px
+
+Coating thickness:
+Fin 1 coating: 0.1000 ± 0.0000 px
