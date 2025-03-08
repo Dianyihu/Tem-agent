@@ -1,0 +1,44 @@
+FinFET Structure Analysis Results
+===============================
+
+Image: finfet.jpeg
+Dimensions: (477, 477)
+Scale: unknown
+
+Fin Width Statistics:
+  Mean width: 139.85 nm
+  Standard deviation: 7.39 nm
+  Min width: 132.45 nm
+  Max width: 147.24 nm
+  Number of fins: 2
+
+Fin Pitch Statistics:
+  Mean pitch: 172.12 nm
+  Standard deviation: 0.00 nm
+  Number of measurements: 1
+
+Fin Height Statistics:
+  Mean height: 397.00 nm
+  Standard deviation: 2.00 nm
+  Number of measurements: 2
+
+Coating Thickness Statistics:
+  Mean thickness: 1.53 nm
+  Standard deviation: 0.08 nm
+  Min thickness: 1.45 nm
+  Max thickness: 1.61 nm
+
+Detailed Fin Measurements:
+  Fin 1: Width 147.24 nm
+  Fin 2: Width 132.45 nm
+
+Fin Pitch Measurements:
+  Pitch 1: 172.12 nm
+
+Fin Height Measurements:
+  Height 1: 395.00 nm
+  Height 2: 399.00 nm
+
+Detailed Coating Measurements:
+  Fin 1 coating: 1.61 ± 2.52 nm
+  Fin 2 coating: 1.45 ± 1.96 nm

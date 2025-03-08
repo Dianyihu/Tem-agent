@@ -3,6 +3,8 @@ import cv2
 from skimage import filters, feature, segmentation, measure
 from scipy import ndimage
 import matplotlib.pyplot as plt
+import re
+import pytesseract
 
 def preprocess_image(image, sigma=1.0):
     """Apply preprocessing steps to enhance image for analysis."""
@@ -109,4 +111,100 @@ def plot_results(image, edges=None, boundaries=None, measurements=None, figsize=
         axes[2].axis('off')
     
     plt.tight_layout()
-    return fig 
+    return fig
+
+def extract_image_metadata(image):
+    """Extract metadata from the bottom part of a TEM/SEM image.
+    
+    Args:
+        image: Input image array
+        
+    Returns:
+        Dictionary containing extracted metadata
+    """
+    # Assume metadata is in the bottom 10% of the image
+    height, width = image.shape[:2]
+    metadata_region = image[int(height * 0.9):, :]
+    
+    # Convert to proper format for OCR if needed
+    if len(metadata_region.shape) == 2:  # Grayscale
+        metadata_region = (metadata_region * 255).astype(np.uint8)
+    
+    # Use OCR to extract text
+    try:
+        text = pytesseract.image_to_string(metadata_region)
+        
+        # Parse common metadata fields
+        metadata = {}
+        
+        # Extract magnification
+        mag_match = re.search(r'Mag\s*=\s*(\d+\.?\d*)\s*[kK]?[xX]', text)
+        if mag_match:
+            mag_value = float(mag_match.group(1))
+            if 'k' in text[mag_match.end()-2:mag_match.end()].lower():
+                mag_value *= 1000
+            metadata['magnification'] = mag_value
+        
+        # Extract working distance
+        wd_match = re.search(r'WD\s*=\s*(\d+\.?\d*)\s*mm', text)
+        if wd_match:
+            metadata['working_distance'] = float(wd_match.group(1))
+        
+        # Extract EHT/voltage
+        eht_match = re.search(r'EHT\s*=\s*(\d+\.?\d*)\s*kV', text)
+        if eht_match:
+            metadata['voltage'] = float(eht_match.group(1))
+        
+        # Extract date if present
+        date_match = re.search(r'Date:?\s*(\d+\s*\w+\s*\d{4})', text)
+        if date_match:
+            metadata['date'] = date_match.group(1)
+            
+        # Extract signal type
+        signal_match = re.search(r'Signal\s*[A-Z]\s*=\s*([A-Za-z0-9]+)', text)
+        if signal_match:
+            metadata['signal'] = signal_match.group(1)
+            
+        return metadata
+    except ImportError:
+        print("Warning: pytesseract not installed. Cannot extract metadata text.")
+        return {}
+    except Exception as e:
+        print(f"Error extracting metadata: {str(e)}")
+        return {}
+
+def separate_image_and_analysis(image):
+    """Separate the original image from analysis overlays and metadata regions.
+    
+    Args:
+        image: Input image that may contain analysis overlays and metadata
+        
+    Returns:
+        Tuple of (original_image, analysis_image, metadata_region)
+    """
+    if len(image.shape) < 2:
+        return image, None, None
+        
+    height, width = image.shape[:2]
+    
+    # Check if image has two parts side by side (original and analysis)
+    if width > height * 1.8:  # Likely has side-by-side panels
+        midpoint = width // 2
+        original_image = image[:, :midpoint]
+        analysis_image = image[:, midpoint:]
+        
+        # Extract metadata region (bottom 10% of original image)
+        metadata_height = int(height * 0.1)
+        metadata_region = original_image[height - metadata_height:, :]
+        
+        # Remove metadata region from original image
+        original_image = original_image[:height - metadata_height, :]
+        
+        return original_image, analysis_image, metadata_region
+    else:
+        # Just extract metadata from bottom
+        metadata_height = int(height * 0.1)
+        metadata_region = image[height - metadata_height:, :]
+        original_image = image[:height - metadata_height, :]
+        
+        return original_image, None, metadata_region

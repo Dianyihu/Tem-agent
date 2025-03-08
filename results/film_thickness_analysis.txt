@@ -1,0 +1,18 @@
+Film Thickness Analysis Results
+==============================
+
+Image: thin_film.png
+Scale: 1.0 nm/pixel
+
+Layer Measurements:
+  Layer 1: 74.00 nm
+  Layer 2: 505.00 nm
+  Layer 3: 69.00 nm
+  Layer 4: 198.00 nm
+
+Statistics:
+  Number of layers: 4
+  Mean thickness: 211.50 nm
+  Standard deviation: 177.16 nm
+  Min thickness: 69.00 nm
+  Max thickness: 505.00 nm
