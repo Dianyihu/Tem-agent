@@ -1,0 +1,74 @@
+# dependencies
+/tem-tilt-detector/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/tem-tilt-detector/coverage
+
+# production
+/tem-tilt-detector/build
+/tem-tilt-detector/dist
+
+# misc
+.DS_Store
+/tem-tilt-detector/.env.local
+/tem-tilt-detector/.env.development.local
+/tem-tilt-detector/.env.test.local
+/tem-tilt-detector/.env.production.local
+/tem-tilt-detector/.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# cache
+.npm
+.eslintcache
+/tem-tilt-detector/.eslintcache
+
+# optional caches
+.yarn-integrity
+
+# images and large files - excluding for this project since we need image files
+# Note: Comment out these lines since the project uses image files for testing
+#*.tiff
+#*.tif
+#*.png
+#*.jpg
+#*.jpeg
+#*.gif
+#*.bmp
+#*.ico
+*.mov
+*.mp4
+*.mp3
+*.zip
+*.gz
+*.tar
+*.rar
+
+# local netlify folder
+.netlify
+
+# Temporary files
+.temp
+.tmp
+tmp/
+temp/ 
